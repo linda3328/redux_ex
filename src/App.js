@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { getArticleList, deleteArticle } from './store/articleListReducer'
-
+import { connect } from 'react-redux';
+//리듀서를 바인드해줘서 아래 articleListActions주소를 추가
+import { bindActionCreators } from 'redux';
+// import { getArticleList, deleteArticle } from './store/articleListReducer';
+import * as articleListActions from './store/articleListReducer';
 class App extends Component {
 
   //디스패치 함수를 호출했음 클릭하면 디스패치된 getArticleList 액션을 불러옴
+  //props 뒤에 articleListActions 주소를 추가
   onSend = () => {
-    this.props.getArticleList();
+    this.props.articleListActions.getArticleList();
   }
 
   render() {
@@ -58,8 +61,10 @@ const mapStateToProps = (state) => {
 //함수를 디스패치 함수에 넣어서 살향사캄
 const mapDispatchToProps = (dispatch) => {
   return {
-    getArticleList: () => dispatch(getArticleList()),
-    deleteArticle: (id) => dispatch(deleteArticle(id))
+    // getArticleList: () => dispatch(articleListActions.getArticleList()),
+    // deleteArticle: (id) => dispatch(articleListActions.deleteArticle(id)),
+    //일일히 적지 않고 액션을 합친후 바인드에 정의함
+    articleListActions: bindActionCreators(articleListActions, dispatch)
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App);
